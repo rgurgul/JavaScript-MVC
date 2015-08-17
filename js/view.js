@@ -1,55 +1,47 @@
 /**
- * The View. View presents the model and provides
+ * View presents the model and provides
  * the UI events. The controller is attached to these
  * events to handle the user interraction.
  */
-function ListView(model, elements) {
-    this._model = model;
-    this._elements = elements;
-
-    this.listModified = new Event(this);
-    this.addButtonClicked = new Event(this);
-    this.delButtonClicked = new Event(this);
-
-    var _this = this;
+function ListView(model, els) {
+    this.model = model;
+    this.els = els;
 
     // attach model listeners
-    this._model.itemAdded.attach(this.rebuildList.bind(this));
-    this._model.itemRemoved.attach(function () {
-        _this.rebuildList();
-    });
+    this.model.added = this.rebuildList.bind(this);
+    this.model.removed = this.rebuildList.bind(this);
 
     // attach listeners to HTML controls
-    this._elements.list.change(function (e) {
-        _this.listModified.notify({
-            index: e.target.selectedIndex
-        });
-    });
-    this._elements.addButton.click(function () {
-        _this.addButtonClicked.notify();
-    });
-    this._elements.delButton.click(function () {
-        _this.delButtonClicked.notify();
-    });
+    this.els.list.change(function (e) {
+        this.listModified(e.target.selectedIndex);
+    }.bind(this));
+    this.els.btnAdd.click(function () {
+        this.btnAddClicked();
+    }.bind(this));
+    this.els.btnDelete.click(function () {
+        this.btnDeleteClicked();
+    }.bind(this));
 }
 
 ListView.prototype = {
-    show: function () {
-        this.rebuildList();
+    listModified: function () {
+        throw "you should implement this method";
     },
-
+    btnAddClicked: function () {
+        throw "you should implement this method";
+    },
+    btnDeleteClicked: function () {
+        throw "you should implement this method";
+    },
     rebuildList: function () {
-        var list, items, key;
-
-        list = this._elements.list;
+        var list = this.els.list;
         list.html('');
 
-        items = this._model.getItems();
-        for (key in items) {
+        var items = this.model.getItems();
+        for (var key in items) {
             if (items.hasOwnProperty(key)) {
                 list.append($('<option>' + items[key] + '</option>'));
             }
         }
-        this._model.setSelectedIndex(-1);
     }
 };

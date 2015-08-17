@@ -1,58 +1,31 @@
-
-
 /**
- * The Controller. Controller responds to user actions and
+ * Controller responds to user actions and
  * invokes changes on the model.
  */
 function ListController(model, view) {
-    this._model = model;
-    this._view = view;
-
-    var _this = this;
-
-    this._view.listModified.attach(function (sender, args) {
-        _this.updateSelected(args.index);
-    });
-
-    this._view.addButtonClicked.attach(function () {
-        _this.addItem();
-    });
-
-    this._view.delButtonClicked.attach(function () {
-        _this.delItem();
-    });
+    this.model = model;
+    this.view = view;
+    this.view.btnAddClicked = this.addItem.bind(this);
+    this.view.btnDeleteClicked = this.removeItem.bind(this);
+    this.view.listModified = this.updateItem.bind(this);
 }
 
 ListController.prototype = {
     addItem: function () {
         var item = window.prompt('Add item:', '');
         if (item) {
-            this._model.addItem(item);
+            this.model.addItem(item);
         }
     },
 
-    delItem: function () {
-        var index;
-
-        index = this._model.getSelectedIndex();
+    removeItem: function () {
+        var index = this.model.getSelectedIndex();
         if (index !== -1) {
-            this._model.removeItemAt(this._model.getSelectedIndex());
+            this.model.removeItemAt(this.model.getSelectedIndex());
         }
     },
 
-    updateSelected: function (index) {
-        //this._model.setSelectedIndex(index);
+    updateItem: function (index) {
+        this.model.setSelectedIndex(index);
     }
 };
-
-$(function () {
-    var model = new ListModel(['PHP', 'JavaScript']),
-        view = new ListView(model, {
-            'list': $('#list'),
-            'addButton': $('#plusBtn'),
-            'delButton': $('#minusBtn')
-        }),
-        controller = new ListController(model, view);
-
-    view.show();
-});
