@@ -5,8 +5,8 @@
 function ListController(model, view) {
     this.model = model;
     this.view = view;
-    this.view.btnAddClicked = this.addItem.bind(this);
-    this.view.btnDeleteClicked = this.removeItem.bind(this);
+    this.view.addItem = this.addItem.bind(this);
+    this.view.removeItem = this.removeItem.bind(this);
     this.view.listModified = this.updateItem.bind(this);
 }
 
@@ -17,14 +17,12 @@ ListController.prototype = {
             this.model.addItem(item);
         }
     },
-
     removeItem: function () {
         var index = this.model.getSelectedIndex();
         if (index !== -1) {
             this.model.removeItemAt(this.model.getSelectedIndex());
         }
     },
-
     updateItem: function (index) {
         this.model.setSelectedIndex(index);
     }

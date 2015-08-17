@@ -16,10 +16,10 @@ function ListView(model, els) {
         this.listModified(e.target.selectedIndex);
     }.bind(this));
     this.els.btnAdd.click(function () {
-        this.btnAddClicked();
+        this.addItem();
     }.bind(this));
     this.els.btnDelete.click(function () {
-        this.btnDeleteClicked();
+        this.removeItem();
     }.bind(this));
 }
 
@@ -27,10 +27,10 @@ ListView.prototype = {
     listModified: function () {
         throw "you should implement this method";
     },
-    btnAddClicked: function () {
+    addItem: function () {
         throw "you should implement this method";
     },
-    btnDeleteClicked: function () {
+    removeItem: function () {
         throw "you should implement this method";
     },
     rebuildList: function () {
