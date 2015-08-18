@@ -1,51 +1,32 @@
 /**
- * The Model. Model stores items and notifies
- * observers about changes.
+ * The Model. Model stores items
  */
 function ListModel(items) {
-    this._items = items;
-    this._selectedIndex = -1;
-
-    this.itemAdded = new Event(this);
-    this.itemRemoved = new Event(this);
-    this.selectedIndexChanged = new Event(this);
+    this.items = items;
+    this.selectedIndex = -1;
 }
 
-ListModel.prototype = {
-    getItems: function () {
-        return [].concat(this._items);
-    },
+ListModel.prototype = new EventTarget();
 
-    addItem: function (item) {
-        this._items.push(item);
-        this.itemAdded.notify({
-            item: item
-        });
-    },
-
-    removeItemAt: function (index) {
-        var item;
-
-        item = this._items[index];
-        this._items.splice(index, 1);
-        this.itemRemoved.notify({
-            item: item
-        });
-        this.setSelectedIndex(-1);
-    },
-
-    getSelectedIndex: function () {
-        return this._selectedIndex;
-    },
-
-    setSelectedIndex: function (index) {
-        var previousIndex;
-
-        previousIndex = this._selectedIndex;
-        this._selectedIndex = index;
-        this.selectedIndexChanged.notify({
-            previous: previousIndex
-        });
-    }
+ListModel.prototype.getItems = function () {
+    return this.items;
 };
 
+ListModel.prototype.addItem = function (item) {
+    this.items.push(item);
+    this.fire('rebuildList');
+};
+
+ListModel.prototype.removeItemAt = function (index) {
+    this.items.splice(index, 1);
+    this.fire('rebuildList');
+    this.setSelectedIndex(-1);
+};
+
+ListModel.prototype.getSelectedIndex = function () {
+    return this.selectedIndex;
+};
+
+ListModel.prototype.setSelectedIndex = function (index) {
+    this.selectedIndex = index;
+};
