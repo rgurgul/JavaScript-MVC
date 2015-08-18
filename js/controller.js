@@ -5,9 +5,9 @@
 function ListController(model, view) {
     this.model = model;
     this.view = view;
-    this.view.addItem = this.addItem.bind(this);
-    this.view.removeItem = this.removeItem.bind(this);
-    this.view.listModified = this.updateItem.bind(this);
+    this.view.addListener("addItem", this.addItem.bind(this));
+    this.view.addListener("removeItem", this.removeItem.bind(this));
+    this.view.addListener("updateItem", this.updateItem.bind(this));
 }
 
 ListController.prototype = {
@@ -23,7 +23,7 @@ ListController.prototype = {
             this.model.removeItemAt(this.model.getSelectedIndex());
         }
     },
-    updateItem: function (index) {
-        this.model.setSelectedIndex(index);
+    updateItem: function (evt) {
+        this.model.setSelectedIndex(evt.index);
     }
 };

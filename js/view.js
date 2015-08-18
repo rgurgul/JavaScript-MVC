@@ -8,40 +8,30 @@ function ListView(model, els) {
     this.els = els;
 
     // attach model listeners
-    this.model.added = this.rebuildList.bind(this);
-    this.model.removed = this.rebuildList.bind(this);
+    this.model.addListener('rebuildList', this.rebuildList.bind(this));
 
     // attach listeners to HTML controls
     this.els.list.change(function (e) {
-        this.listModified(e.target.selectedIndex);
+        this.fire({type: "updateItem", index: e.target.selectedIndex});
     }.bind(this));
     this.els.btnAdd.click(function () {
-        this.addItem();
+        this.fire("addItem");
     }.bind(this));
     this.els.btnDelete.click(function () {
-        this.removeItem();
+        this.fire("removeItem");
     }.bind(this));
 }
 
-ListView.prototype = {
-    listModified: function () {
-        throw "you should implement this method";
-    },
-    addItem: function () {
-        throw "you should implement this method";
-    },
-    removeItem: function () {
-        throw "you should implement this method";
-    },
-    rebuildList: function () {
-        var list = this.els.list;
-        list.html('');
+ListView.prototype = new EventTarget();
 
-        var items = this.model.getItems();
-        for (var key in items) {
-            if (items.hasOwnProperty(key)) {
-                list.append($('<option>' + items[key] + '</option>'));
-            }
+ListView.prototype.rebuildList = function () {
+    var list = this.els.list;
+    list.html('');
+
+    var items = this.model.getItems();
+    for (var key in items) {
+        if (items.hasOwnProperty(key)) {
+            list.append($('<option>' + items[key] + '</option>'));
         }
     }
 };
