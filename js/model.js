@@ -1,4 +1,3 @@
-
 /**
  * The Model. Model stores items and notifies
  * observers about changes.
@@ -32,9 +31,7 @@ ListModel.prototype = {
         this.itemRemoved.notify({
             item: item
         });
-        if (index === this._selectedIndex) {
-            this.setSelectedIndex(-1);
-        }
+        this.setSelectedIndex(-1);
     },
 
     getSelectedIndex: function () {
