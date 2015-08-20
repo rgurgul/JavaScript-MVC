@@ -1,5 +1,6 @@
 /**
- * The Model. Model stores items
+ * A model stores data that is retrieved to the controller and displayed in the view.
+ * Whenever there is a change to the data it is updated in the view.
  */
 function ListModel(items) {
     this.items = items;
@@ -14,12 +15,12 @@ ListModel.prototype.getItems = function () {
 
 ListModel.prototype.addItem = function (item) {
     this.items.push(item);
-    this.fire('rebuildList');
+    this.fire('itemAdded');
 };
 
 ListModel.prototype.removeItemAt = function (index) {
     this.items.splice(index, 1);
-    this.fire('rebuildList');
+    this.fire('itemRemoved');
     this.setSelectedIndex(-1);
 };
 

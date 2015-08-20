@@ -1,9 +1,9 @@
 $(function () {
-    var model = new ListModel(['PHP', 'JavaScript', 'AngularJs']),
+    var model = new ListModel(['JavaScript', 'AngularJs', 'Bootstrap']),
         view = new ListView(model, {
-            list: $('#list'),
-            btnAdd: $('#btnAdd'),
-            btnDelete: $('#btnDelete')
+            list: $('.list'),
+            btnAdd: $('.btn-add'),
+            btnDelete: $('.btn-delete')
         }),
         controller = new ListController(model, view);
 

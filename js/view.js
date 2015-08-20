@@ -1,16 +1,17 @@
 /**
  * View presents the model and provides
- * the UI events. The controller is attached to these
- * events to handle the user interraction.
+ * the UI events. The controller listens these
+ * events to handle the user interaction.
  */
 function ListView(model, els) {
     this.model = model;
     this.els = els;
 
-    // attach model listeners
-    this.model.addListener('rebuildList', this.rebuildList.bind(this));
+    // add model listeners
+    this.model.addListener('itemAdded', this.rebuildList.bind(this));
+    this.model.addListener('itemRemoved', this.rebuildList.bind(this));
 
-    // attach listeners to HTML controls
+    // add listeners to HTML controls
     this.els.list.change(function (e) {
         this.fire({type: "updateItem", index: e.target.selectedIndex});
     }.bind(this));

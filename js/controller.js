@@ -12,7 +12,7 @@ function ListController(model, view) {
 
 ListController.prototype = {
     addItem: function () {
-        var item = window.prompt('Add item:', '');
+        var item = window.prompt('New item:', '');
         if (item) {
             this.model.addItem(item);
         }
